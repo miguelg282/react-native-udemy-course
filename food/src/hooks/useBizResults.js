@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import yelp from '../api/yelp';
 
 export default () => {
-    const [bizResults, setBizResults] = useState([]);
+    const [results, setBizResults] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
 
     const searchApi = async searchTerm => {
@@ -29,6 +29,6 @@ export default () => {
         searchApi('pasta');
     }, []);
 
-  return [searchApi, bizResults, errorMessage];
+  return [searchApi, results, errorMessage];
 };
 
