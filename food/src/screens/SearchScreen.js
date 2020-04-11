@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import SearchBar from '../components/SearchBar';
 import useBizResults from '../hooks/useBizResults';
 import ResultsList from '../components/ResultsList';
 
-const SearchScreen = () => {
+const SearchScreen = ({ navigation }) => {
     const [term, setTerm] = useState('');
     const [searchApi, results, errorMessage] = useBizResults();
 
@@ -14,9 +14,12 @@ const SearchScreen = () => {
             return result.price === price;
         });
     };
-    
+
+    /*========= flex: 1 can resolve many styling issues.=========*/
+    /*========= <></> wrapping components with this also fixxes many stylying issues=========*/
+
     return (
-        <View>
+        <>
             <SearchBar 
             term={term} 
             onTermChange={setTerm} // same as: {(newTerm) => setTerm()}
@@ -24,10 +27,24 @@ const SearchScreen = () => {
             />
             {errorMessage ? <Text>{errorMessage}</Text> : null}
             <Text>We have found {results.length} results</Text>
-            <ResultsList results={filterResultsByPrice('$')} title='Friendly Prices' />
-            <ResultsList results={filterResultsByPrice('$$')} title='A Bit Pricey' />
-            <ResultsList results={filterResultsByPrice('$$$')} title='Pricey' />
-        </View>
+            <ScrollView>
+                <ResultsList 
+                    results={filterResultsByPrice('$')} 
+                    title='Friendly Prices'
+                    navigation={navigation} 
+                />
+                <ResultsList 
+                    results={filterResultsByPrice('$$')} 
+                    title='A Bit Pricey'
+                    navigation={navigation} 
+                />
+                <ResultsList 
+                    results={filterResultsByPrice('$$$')} 
+                    title='Pricey' 
+                    navigation={navigation}
+                />
+            </ScrollView>
+        </>
     )
 };
 
